@@ -297,7 +297,7 @@ namespace Text.Analyzers
             {
                 var assembly = context.Compilation.Assembly;
 
-                ReportDiagnosticsForSymbol(assembly, assembly.Name, context.ReportDiagnostic);
+                ReportDiagnosticsForSymbol(assembly, assembly.Name, context.ReportDiagnostic, checkForUnmeaningful: false);
             }
 
             void AnalyzeSymbol(SymbolAnalysisContext symbolContext)
@@ -332,7 +332,7 @@ namespace Text.Analyzers
 
                         foreach (var typeParameter in method.TypeParameters)
                         {
-                            ReportDiagnosticsForSymbol(typeParameter, RemovePrefixIfPresent('T', typeParameter.Name), symbolContext.ReportDiagnostic);
+                            ReportDiagnosticsForSymbol(typeParameter, RemovePrefixIfPresent('T', typeParameter.Name), symbolContext.ReportDiagnostic, checkForUnmeaningful: false);
                         }
 
                         break;
@@ -345,7 +345,7 @@ namespace Text.Analyzers
 
                         foreach (var typeParameter in type.TypeParameters)
                         {
-                            ReportDiagnosticsForSymbol(typeParameter, RemovePrefixIfPresent('T', typeParameter.Name), symbolContext.ReportDiagnostic);
+                            ReportDiagnosticsForSymbol(typeParameter, RemovePrefixIfPresent('T', typeParameter.Name), symbolContext.ReportDiagnostic, checkForUnmeaningful: false);
                         }
 
                         break;
@@ -363,10 +363,10 @@ namespace Text.Analyzers
                         break;
                 }
 
-                ReportDiagnosticsForSymbol(symbol, symbolName, symbolContext.ReportDiagnostic);
+                ReportDiagnosticsForSymbol(symbol, symbolName, symbolContext.ReportDiagnostic, checkForUnmeaningful: false);
             }
 
-            void ReportDiagnosticsForSymbol(ISymbol symbol, string symbolName, Action<Diagnostic> reportDiagnostic, bool checkForUnmeaningful = true)
+            void ReportDiagnosticsForSymbol(ISymbol symbol, string symbolName, Action<Diagnostic> reportDiagnostic, bool checkForUnmeaningful)
             {
                 foreach (var misspelledWord in GetMisspelledWords(symbolName))
                 {
